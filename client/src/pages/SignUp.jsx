@@ -1,7 +1,38 @@
-import { Button, Label, TextInput } from "flowbite-react";
+import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import { signUp } from "../api/signUp.api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function SignUp() {
+  const [formData, setFormData] = useState({});
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      !formData.username ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      return setErrorMessage("Plese fill out all fields.");
+    }
+    setLoading(true);
+    try {
+      const response = signUp(formData);
+      toast.success("Sign up successfully");
+      setLoading(false);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      setLoading(true);
+      toast.error("Sign up error");
+    }
+  };
   return (
     <div className="min-h-screen mt-20">
       <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
@@ -21,29 +52,57 @@ export default function SignUp() {
 
         {/* right */}
         <div className="flex-1">
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
               <Label value="Your username" />
-              <TextInput type="text" placeholder="Username" id="username" />
+              <TextInput
+                type="text"
+                placeholder="Username"
+                id="username"
+                onChange={handleChange}
+              />
             </div>
             <div>
               <Label value="Your email" />
-              <TextInput type="email" placeholder="email@gmail.com" id="email" />
+              <TextInput
+                type="email"
+                placeholder="email@gmail.com"
+                id="email"
+                onChange={handleChange}
+              />
             </div>
             <div>
               <Label value="Your password" />
-              <TextInput type="password" placeholder="Password" id="password" />
+              <TextInput
+                type="password"
+                placeholder="Password"
+                id="password"
+                onChange={handleChange}
+              />
             </div>
             <div>
               <Label value="Confirm password" />
               <TextInput
                 type="password"
                 placeholder="Password"
-                id="confirmpassword"
+                id="confirmPassword"
+                onChange={handleChange}
               />
             </div>
-            <Button gradientDuoTone="purpleToPink" type="submit">
-              Sign Up
+            <Button
+              disabled={loading}
+              gradientDuoTone="purpleToPink"
+              type="submit"
+            >
+              {loading ? (
+                <div>
+                  {" "}
+                  <Spinner size="sm" />
+                  <span className="pl-3"> Loading...</span>
+                </div>
+              ) : (
+                "Sign Up"
+              )}
             </Button>
           </form>
 
@@ -53,8 +112,14 @@ export default function SignUp() {
               Login
             </Link>
           </div>
+          {errorMessage && (
+            <Alert className="mt-5" color="failure">
+              {errorMessage}
+            </Alert>
+          )}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
