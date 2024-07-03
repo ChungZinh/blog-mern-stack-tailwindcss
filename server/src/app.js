@@ -17,9 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 require("./db/init.mongodb");
 
 // routes
-app.get("/", (req, res) => {
-  res.send("Heleo");
-});
+app.use("", require("./routes"));
 
 // error handling
 app.use((req, res, next) => {
