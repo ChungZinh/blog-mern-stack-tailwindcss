@@ -11,7 +11,7 @@ export default function Header() {
           to="/"
           className="self-center whitespace-nowrap text-sm md:text-xl font-semibold dark:text-white"
         >
-          <span className="px-2.5 py-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full text-white">
+          <span className="px-2.5 py-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
             Dev
           </span>
           Blog
@@ -24,22 +24,20 @@ export default function Header() {
             rightIcon={AiOutlineSearch}
           />
         </form>
-        <Button className="w-12 h-10 lg:hidden" color={"gray"} pill>
+        <Button className="w-12 h-10 lg:hidden" color={"gray"}>
           <AiOutlineSearch size={18} />
         </Button>
         <div className="flex items-center gap-2 md:order-2">
-          <Button className="w-12 h-10 hidden sm:inline" color="gray" pill>
+          <Button className="w-12 h-10 hidden sm:inline" color="gray">
             <FaMoon />
           </Button>
           <Link to="/sign-in">
-            <Button gradientDuoTone={"purpleToBlue"} pill>
-              Sign In
-            </Button>
+            <Button gradientDuoTone={"purpleToBlue"}>Sign In</Button>
           </Link>
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
-          <Navbar.Link active={path === "/"} as={"div"}> 
+          <Navbar.Link active={path === "/"} as={"div"}>
             <Link to={"/"}>Home</Link>
           </Navbar.Link>
           <Navbar.Link active={path === "/about"} as={"div"}>
