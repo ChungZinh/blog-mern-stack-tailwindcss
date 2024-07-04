@@ -1,7 +1,9 @@
+const { generateTokens } = require("../auth/authUtils");
 const { BadRequestResponse } = require("../core/error.response");
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
-
+const crypto = require("crypto");
+const KeyService = require("./key.service");
 class AuthService {
   static async signUp({ username, email, password, confirmPassword }) {
     //check username, email, password are not empty
@@ -28,6 +30,51 @@ class AuthService {
     });
 
     return newUser;
+  }
+
+  static async signIn({ email, password }) {
+    // check if user exist
+    const user = await User.findOne({ email }).lean();
+    if (!user) throw new BadRequestResponse("Invalid email or password");
+
+    // check password
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch)
+      throw new BadRequestResponse("Invalid email or password");
+
+    // create token
+    const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+      modulusLength: 4096,
+      publicKeyEncoding: {
+        type: "pkcs1",
+        format: "pem",
+      },
+      privateKeyEncoding: {
+        type: "pkcs1",
+        format: "pem",
+      },
+    });
+
+    const token = await generateTokens(
+      {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+      privateKey
+    );
+
+    const key = await KeyService.createKey({
+      userId: user._id,
+      publicKey,
+      privateKey,
+      refreshToken: token.refreshToken,
+    });
+
+    return {
+      user,
+      token: token.accessToken,
+    };
   }
 }
 
