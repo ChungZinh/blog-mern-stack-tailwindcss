@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
 import Header from "./components/Header";
 import NotFound from "./pages/NotFound";
+import FooterComp from "./components/Footer";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         {/* NotFound */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <FooterComp/>
     </BrowserRouter>
   );
 }
