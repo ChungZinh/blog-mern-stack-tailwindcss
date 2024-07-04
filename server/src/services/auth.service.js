@@ -32,9 +32,9 @@ class AuthService {
     return newUser;
   }
 
-  static async signIn({ email, password }) {
+  static async signIn({ username, password }) {
     // check if user exist
-    const user = await User.findOne({ email }).lean();
+    const user = await User.findOne({ username }).lean();
     if (!user) throw new BadRequestResponse("Invalid email or password");
 
     // check password
