@@ -23,7 +23,7 @@ export default function SignUp() {
     }
     setLoading(true);
     try {
-      const response = signUp(formData);
+      const response = await signUp(formData);
       toast.success("Sign up successfully");
       setLoading(false);
       console.log(response);

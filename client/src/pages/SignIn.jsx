@@ -4,27 +4,22 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { signIn } from "../api/signIn.api";
+import { useDispatch, useSelector } from "react-redux";
 export default function SignIn() {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.username || !formData.password) {
-      return setErrorMessage("Plese fill out all fields.");
-    }
-    setLoading(true);
-    try {
-      const response = signIn(formData);
+    const response = await signIn(dispatch, formData);
+    console.log("respone: ", response);
+    if (response.user) {
       toast.success("Sign in successfully");
-      setLoading(false);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-      setLoading(true);
+    } else {
       toast.error("Sign in error");
     }
   };
