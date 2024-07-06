@@ -64,7 +64,7 @@ class AuthService {
       privateKey
     );
 
-    const key = await KeyService.createKey({
+    await KeyService.createKey({
       userId: user._id,
       publicKey,
       privateKey,
@@ -75,6 +75,49 @@ class AuthService {
       user,
       token: token.accessToken,
     };
+  }
+
+  static async googleAuth({ name, email, avatar }) {
+    // Kiểm tra người dùng đã tồn tại
+    const user = await User.findOne({ email }).lean();
+
+    const generateUserTokenAndKeys = async (user) => {
+      const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+        modulusLength: 4096,
+        publicKeyEncoding: { type: "pkcs1", format: "pem" },
+        privateKeyEncoding: { type: "pkcs1", format: "pem" },
+      });
+
+      const token = await generateTokens(
+        { _id: user._id, username: user.username, email: user.email },
+        privateKey
+      );
+
+      await KeyService.createKey({
+        userId: user._id,
+        publicKey,
+        privateKey,
+        refreshToken: token.refreshToken,
+      });
+
+      return { user, token: token.accessToken };
+    };
+
+    if (user) {
+      return await generateUserTokenAndKeys(user);
+    } else {
+      const hashedPassword = await bcrypt.hash("google-auth", 10);
+      const newUser = await User.create({
+        username:
+          name.toLowerCase().split(" ").join("") +
+          Math.random().toString(9).slice(-4),
+        email,
+        avatar,
+        password: hashedPassword,
+      });
+
+      return await generateUserTokenAndKeys(newUser);
+    }
   }
 }
 

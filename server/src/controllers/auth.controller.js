@@ -4,7 +4,6 @@ const {
 } = require("../core/success.response");
 const AuthService = require("../services/auth.service");
 class AuthController {
-
   static async signUp(req, res, next) {
     new SuccessResponse({
       message: "Sign up successfully",
@@ -15,6 +14,12 @@ class AuthController {
     new SuccessResponse({
       message: "Sign in successfully",
       data: await AuthService.signIn(req.body),
+    }).send(res);
+  }
+  static async googleAuth(req, res, next) {
+    new SuccessResponse({
+      message: "Google Auth successfully",
+      data: await AuthService.googleAuth(req.body),
     }).send(res);
   }
 }
