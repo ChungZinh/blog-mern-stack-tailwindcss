@@ -23,6 +23,10 @@ class KeyService {
       };
     }
   }
+
+  static async findByUserId(userId) {
+    return Key.findOne({ user: userId });
+  }
 }
 
 module.exports = KeyService;

@@ -10,6 +10,7 @@ export const oAuth = async (dispatch, formData) => {
     dispatch(signInStart());
     const response = await axios.post(`${serverUrl}/api/auth/google`, formData);
     console.log("response: ", response.data.data);
+    localStorage.setItem("token", response.data.data.token);
     dispatch(signInSuccess(response.data.data.user));
     return response.data.data;
   } catch (error) {
