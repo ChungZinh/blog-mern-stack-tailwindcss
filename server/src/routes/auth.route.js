@@ -6,5 +6,6 @@ const { asyncHandler } = require("../helpers/asyncHandler");
 router.post("/signup", asyncHandler(authController.signUp));
 router.post("/signin", asyncHandler(authController.signIn));
 router.post('/google', asyncHandler(authController.googleAuth))
+router.use(require("../auth/authUtils").verifyToken);
 router.post('/logout', asyncHandler(authController.logout))
 module.exports = router;

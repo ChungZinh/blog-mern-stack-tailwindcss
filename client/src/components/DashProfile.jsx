@@ -13,6 +13,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { deleteUser, updateUser } from "../api/user.api";
 import { toast } from "react-toastify";
+import { logout } from "../api/auth.api";
 
 export default function DashProfile() {
   const { currentUser } = useSelector((state) => state.user);
@@ -102,6 +103,10 @@ export default function DashProfile() {
     }
   };
 
+  const handleLogout = async () => {
+    await logout(dispatch, currentUser);
+  };
+
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl ">Profile</h1>
@@ -185,7 +190,10 @@ export default function DashProfile() {
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
           Delete Account
         </span>
-        <span className="cursor-pointer"> Sign Out</span>
+        <span className="cursor-pointer" onClick={handleLogout}>
+          {" "}
+          Sign Out
+        </span>
       </div>
       <Modal
         show={showModal}

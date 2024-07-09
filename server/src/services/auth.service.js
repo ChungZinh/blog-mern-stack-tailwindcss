@@ -4,6 +4,7 @@ const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const KeyService = require("./key.service");
+const Key = require("../models/key.model");
 class AuthService {
   static async signUp({ username, email, password, confirmPassword }) {
     //check username, email, password are not empty
@@ -119,9 +120,9 @@ class AuthService {
       return await generateUserTokenAndKeys(newUser);
     }
   }
-  
-  static async logout({user}){
-    await KeyService.deleteKey(user._id);
+
+  static async logout(req) {
+    await Key.findOneAndDelete({ user: req.user._id });
   }
 }
 

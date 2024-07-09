@@ -25,7 +25,7 @@ class AuthController {
   static async logout(req, res, next) {
     new SuccessResponse({
       message: "Logout successfully",
-      data: await AuthService.logout(req.user),
+      data: await AuthService.logout(req),
     }).send(res);
   }
 }
