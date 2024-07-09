@@ -14,9 +14,10 @@ import "react-circular-progressbar/dist/styles.css";
 import { deleteUser, updateUser } from "../api/user.api";
 import { toast } from "react-toastify";
 import { logout } from "../api/auth.api";
+import { Link } from "react-router-dom";
 
 export default function DashProfile() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
@@ -182,9 +183,25 @@ export default function DashProfile() {
           onChange={handleChange}
         />
 
-        <Button type="submit" outline gradientDuoTone="purpleToBlue">
-          Update
+        <Button
+          type="submit"
+          outline
+          gradientDuoTone="purpleToBlue"
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Update"}
         </Button>
+        {currentUser.isAdmin && (
+          <Link to={"/create-post"} className="text-center">
+            <Button
+              type="button"
+              className="w-full"
+              gradientDuoTone="purpleToBlue"
+            >
+              Create a post
+            </Button>
+          </Link>
+        )}
       </form>
       <div className="text-red-500 flex justify-between mt-5">
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
