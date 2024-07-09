@@ -119,6 +119,10 @@ class AuthService {
       return await generateUserTokenAndKeys(newUser);
     }
   }
+  
+  static async logout({user}){
+    await KeyService.deleteKey(user._id);
+  }
 }
 
 module.exports = AuthService;

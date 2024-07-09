@@ -22,6 +22,12 @@ class AuthController {
       data: await AuthService.googleAuth(req.body),
     }).send(res);
   }
+  static async logout(req, res, next) {
+    new SuccessResponse({
+      message: "Logout successfully",
+      data: await AuthService.logout(req.user),
+    }).send(res);
+  }
 }
 
 module.exports = AuthController;
