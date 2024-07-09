@@ -61,6 +61,7 @@ class AuthService {
         _id: user._id,
         username: user.username,
         email: user.email,
+        isAdmin: user.isAdmin,
       },
       privateKey
     );
@@ -90,7 +91,12 @@ class AuthService {
       });
 
       const token = await generateTokens(
-        { _id: user._id, username: user.username, email: user.email },
+        {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          isAdmin: user.isAdmin,
+        },
         privateKey
       );
 
