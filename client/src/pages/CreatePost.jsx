@@ -11,16 +11,20 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { app } from "../firebase";
+import { createPost } from "../api/post.api";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 
 export default function CreatePost() {
-  const [value, setValue] = useState("");
+  const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
   const [file, setFile] = useState(null);
   const [imageFileUploadingProgress, setImageFileUploadingProgress] =
     useState(null);
   const [imageFileUploadingError, setImageFileUploadingError] = useState(null);
   const [formData, setFormData] = useState({});
   console.log(imageFileUploadingProgress, imageFileUploadingError);
-
   const handleUploadImage = async () => {
     try {
       if (!file) return;
@@ -55,12 +59,18 @@ export default function CreatePost() {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const res = await createPost(currentUser, formData, navigate);
+    console.log("res", res)
+   
+  };
   return (
     <div className="p-3 lg:max-w-6xl md:max-w-3xl  mx-auto min-h-screen">
       <h1 className="text-center text-3xl my-7 font-semibold">
         Create a new post
       </h1>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
@@ -68,8 +78,16 @@ export default function CreatePost() {
             required
             id="title"
             className="flex-1"
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           />
-          <Select>
+          <Select
+            id="category"
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
+          >
             <option value="uncategorized">Select a category</option>
             <option value="javascript">JavaScript</option>
             <option value="Reactjs">React.js</option>
@@ -120,11 +138,10 @@ export default function CreatePost() {
           />
         )}
         <ReactQuill
-          value={value}
-          onChange={setValue}
           placeholder="Write something amazing..."
           className="h-96 mb-12"
           required
+          onChange={(v) => setFormData({ ...formData, content: v })}
         />
         <Button type="submit" gradientDuoTone="purpleToBlue" size={"lg"}>
           Publish

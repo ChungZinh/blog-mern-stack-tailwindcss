@@ -20,7 +20,8 @@ var postSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: true,
+      default:
+        "https://www.ryrob.com/wp-content/uploads/2022/02/iStock-956891332-1024x796.jpg",
     },
     category: {
       type: String,
