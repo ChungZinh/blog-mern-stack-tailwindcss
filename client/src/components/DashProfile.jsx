@@ -74,13 +74,18 @@ export default function DashProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.keys(formData).length === 0) return;
-
-    const res = await updateUser(dispatch, currentUser, formData);
-    if (res.user) {
-      toast.success("Update user successfully");
-    } else {
-      toast.error("Update user error");
+    
+    if (Object.keys(formData).length === 0) {
+      toast.error("Form data is empty");
+      return;
+    }
+  
+    try {
+      const res = await updateUser(dispatch, currentUser, formData);
+      console.log("res: ", res);
+    } catch (err) {
+      console.error("Error updating user: ", err);
+      toast.error("Unexpected error occurred");
     }
   };
 

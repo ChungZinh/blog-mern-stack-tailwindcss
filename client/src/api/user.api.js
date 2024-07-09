@@ -17,9 +17,15 @@ export const updateUser = async (dispatch, user, formData) => {
       },
       body: JSON.stringify(formData),
     });
-    dispatch(updateSuccess(res.data.data.user));
-    return res.data.data;
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to update user");
+    }
+    dispatch(updateSuccess(data.data));
+    return data.data;
   } catch (err) {
+    console.error(err);
     dispatch(updateFailure());
   }
 };
