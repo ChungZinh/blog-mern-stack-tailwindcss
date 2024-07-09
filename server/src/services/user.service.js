@@ -1,6 +1,7 @@
 const { UnauthorizedResponse } = require("../core/error.response");
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
+const Key = require('../models/key.model')
 class UserService {
   static async updateUser(req) {
     if (req.user._id !== req.params.userId)
@@ -30,6 +31,14 @@ class UserService {
     );
 
     return updatedUser;
+  }
+
+  static async deleteUser(req) {
+    if (req.user._id !== req.params.userId)
+      throw new UnauthorizedResponse("Invalid user id");
+
+    await User.findByIdAndDelete(req.params.userId);
+    await Key.findOneAndDelete({user: req.params.userId})
   }
 }
 
