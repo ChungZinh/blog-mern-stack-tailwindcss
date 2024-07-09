@@ -3,9 +3,9 @@ import { FaGoogle } from "react-icons/fa6";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { app } from "../firebase";
 import { useDispatch } from "react-redux";
-import { oAuth } from "../api/oAuth.api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { oAuth } from "../api/auth.api";
 export default function OAuth() {
   const auth = getAuth(app);
   const dispatch = useDispatch();

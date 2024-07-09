@@ -11,7 +11,7 @@ const HEADER = {
 const generateTokens = (payload, privateKey) => {
   const accessToken = jwt.sign(payload, privateKey, {
     algorithm: "RS256",
-    expiresIn: "15m",
+    expiresIn: "7d",
   });
   const refreshToken = jwt.sign(payload, privateKey, {
     algorithm: "RS256",

@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { signIn } from "../api/signIn.api";
 import { useDispatch, useSelector } from "react-redux";
 import OAuth from "../components/OAuth";
+import { signIn } from "../api/auth.api";
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
