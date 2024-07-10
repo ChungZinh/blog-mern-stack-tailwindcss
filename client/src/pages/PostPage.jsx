@@ -4,6 +4,7 @@ import { serverUrl } from "../constants";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Button, Spinner } from "flowbite-react";
+import CallToAction from "../components/CallToAction";
 export default function PostPage() {
   const { currentUser } = useSelector((state) => state.user);
   const { postSlug } = useParams();
@@ -82,6 +83,9 @@ export default function PostPage() {
         dangerouslySetInnerHTML={{ __html: post && post.content }}
         className="p-3 lg:max-w-6xl md:max-w-3xl mx-auto w-full post-content"
       ></div>
+      <div className="max-w-4xl mx-auto w-full">
+        <CallToAction/>
+      </div>
     </main>
   );
 }
