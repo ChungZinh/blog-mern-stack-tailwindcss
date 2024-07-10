@@ -1,7 +1,7 @@
 const { UnauthorizedResponse } = require("../core/error.response");
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
-const Key = require('../models/key.model')
+const Key = require("../models/key.model");
 class UserService {
   static async updateUser(req) {
     if (req.user._id !== req.params.userId)
@@ -38,7 +38,48 @@ class UserService {
       throw new UnauthorizedResponse("Invalid user id");
 
     await User.findByIdAndDelete(req.params.userId);
-    await Key.findOneAndDelete({user: req.params.userId})
+    await Key.findOneAndDelete({ user: req.params.userId });
+  }
+
+  static async getUsers(req) {
+    if (!req.user.isAdmin)
+      throw new UnauthorizedResponse(
+        "You are not authorized to perform this action"
+      );
+
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.sort === "asc" ? 1 : -1;
+
+    const user = await User.find()
+      .sort({ createdAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
+    const userWithoutPassword = user.map((u) => {
+      const { password, ...rest } = u._doc;
+      return rest;
+    });
+
+    const total = await User.countDocuments();
+
+    const now = new Date();
+
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthUsers = await User.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    return {
+      total,
+      user: userWithoutPassword,
+      lastMonthUsers,
+    };
   }
 }
 

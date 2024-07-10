@@ -15,6 +15,13 @@ class UserController {
       data: await UserService.deleteUser(req),
     }).send(res);
   }
+
+  static async getUsers(req, res, next) {
+    new SuccessResponse({
+      message: "Get users successfully",
+      data: await UserService.getUsers(req),
+    }).send(res);
+  }
 }
 
 module.exports = UserController;
