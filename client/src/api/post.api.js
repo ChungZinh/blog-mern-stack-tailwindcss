@@ -22,7 +22,7 @@ export const createPost = async (user, formData, navigate) => {
     navigate(`/post/${data.data.slug}`);
     return data.data
   } catch (err) {
-    console.error(err);
+    console.error(err); 
     toast.error(err.message || "Failed to create post");
   }
 };

@@ -1,6 +1,6 @@
 import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { HiArrowSmRight, HiUser } from "react-icons/hi";
+import { HiArrowSmRight, HiDocumentText, HiUser } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { logout } from "../api/auth.api";
@@ -27,12 +27,23 @@ export default function DashSideBar() {
           <Sidebar.Item
             active={tab === "profile"}
             icon={HiUser}
-            label={"User"}
+            label={currentUser.isAdmin ? "Admin" : "User"}
             labelColor="dark"
             href="/dashboard?tab=profile"
           >
             Profile
           </Sidebar.Item>
+          {currentUser.isAdmin && (
+            <Sidebar.Item
+              active={tab === "posts"}
+              icon={HiDocumentText}
+              // label={"User"}
+              labelColor="dark"
+              href="/dashboard?tab=posts"
+            >
+              Posts
+            </Sidebar.Item>
+          )}
 
           <Sidebar.Item
             // active
