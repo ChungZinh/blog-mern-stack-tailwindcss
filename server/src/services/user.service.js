@@ -34,9 +34,6 @@ class UserService {
   }
 
   static async deleteUser(req) {
-    if (req.user._id !== req.params.userId)
-      throw new UnauthorizedResponse("Invalid user id");
-
     await User.findByIdAndDelete(req.params.userId);
     await Key.findOneAndDelete({ user: req.params.userId });
   }
@@ -77,7 +74,7 @@ class UserService {
 
     return {
       total,
-      user: userWithoutPassword,
+      users: userWithoutPassword,
       lastMonthUsers,
     };
   }
