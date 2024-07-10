@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 export default function DashPost() {
   const { currentUser } = useSelector((state) => state.user);
   const [posts, setPosts] = useState([]);
-
+  const [showMore, setShowMore] = useState(true);
   useEffect(() => {
     const fetchPosts = async () => {
       if (currentUser && currentUser.isAdmin) {
@@ -27,6 +27,9 @@ export default function DashPost() {
           const data = await res.json();
           if (res.ok) {
             setPosts(data.data.posts);
+            if (data.data.posts.length < 9) {
+              setShowMore(false);
+            }
             toast.success("Get posts successfully");
             console.log("posts:", posts);
           } else {
@@ -41,14 +44,43 @@ export default function DashPost() {
     fetchPosts();
   }, [currentUser]);
 
+  const handleShowMore = async () => {
+    const startIndex = posts.length;
+    try {
+      const res = await fetch(
+        `${serverUrl}/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            authorization: localStorage.getItem("token"),
+            "x-client-id": currentUser._id,
+          },
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setPosts((prev) => [...prev, ...data.data.posts]);
+        if (data.data.posts.length < 9) {
+          setShowMore(false);
+        }
+        toast.success("Get posts successfully");
+      } else {
+        toast.error("Get posts error");
+      }
+    } catch (error) {
+      toast.error("Get posts error");
+    }
+  };
+
   return (
     <div
-      className="table-auto overflow-x-scroll md:mx-auto p-3 
+      className="table-auto overflow-x-scroll md:mx-auto p-3  w-full
     scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-500 dark:scrollbar-track-slate-700 "
     >
       {currentUser.isAdmin && posts.length > 0 ? (
         <>
-          <Table hoverable className="shadow-md">
+          <Table hoverable className="shadow-md ">
             <Table.Head>
               <Table.HeadCell>Date updated</Table.HeadCell>
               <Table.HeadCell>Post image</Table.HeadCell>
@@ -63,7 +95,7 @@ export default function DashPost() {
               {posts.map((post) => (
                 <Table.Row
                   key={post._id}
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800 "
+                  className="bg-white divide-y dark:divide-teal-500 divide-neutral-200 h-28 duration-300 dark:border-gray-700 dark:bg-gray-800 "
                 >
                   <Table.Cell>
                     {new Date(post.updatedAt).toLocaleDateString()}
@@ -72,7 +104,7 @@ export default function DashPost() {
                     <img
                       src={post.image}
                       alt={post.title}
-                      className="w-20 h-20 object-cover"
+                      className="w-20 h-15 object-cover"
                     />
                   </Table.Cell>
                   <Table.Cell>
@@ -101,6 +133,14 @@ export default function DashPost() {
               ))}
             </Table.Body>
           </Table>
+          {showMore && (
+            <button
+              onClick={handleShowMore}
+              className="w-full text-teal-500 self-center text-sm py-7"
+            >
+              Show more
+            </button>
+          )}
         </>
       ) : (
         <p>You have no posts yet!</p>
