@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { Button, Modal, Table } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { deletePost } from "../api/post.api";
 
 export default function DashPost() {
   const { currentUser } = useSelector((state) => state.user);
