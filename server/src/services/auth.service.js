@@ -66,7 +66,7 @@ class AuthService {
       privateKey
     );
 
-    await KeyService.createKey({
+    const key = await KeyService.createKey({
       userId: user._id,
       publicKey,
       privateKey,
@@ -100,7 +100,7 @@ class AuthService {
         privateKey
       );
 
-      await KeyService.createKey({
+      const key =  await KeyService.createKey({
         userId: user._id,
         publicKey,
         privateKey,

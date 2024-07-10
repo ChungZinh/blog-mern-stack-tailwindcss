@@ -14,7 +14,6 @@ class KeyService {
       const options = { new: true, upsert: true };
 
       const key = await Key.findOneAndUpdate(filter, update, options);
-
       return key;
     } catch (error) {
       return {

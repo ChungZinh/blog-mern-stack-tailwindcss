@@ -1,6 +1,6 @@
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import { signIn } from "../api/auth.api";
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, error: errorMessage } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
@@ -20,6 +21,7 @@ export default function SignIn() {
     console.log("respone: ", response);
     if (response.user) {
       toast.success("Sign in successfully");
+      navigate("/");
     } else {
       toast.error("Sign in error");
     }
