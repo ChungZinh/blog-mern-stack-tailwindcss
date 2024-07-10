@@ -55,6 +55,23 @@ class PostService {
   static async delete(req) {
     await Post.findByIdAndDelete(req.params.id);
   }
+
+  static async update(req) {
+    const updatePost = await Post.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          title: req.body.title,
+          content: req.body.content,
+          category: req.body.category,
+          image: req.body.image,
+        },
+      },
+      { new: true }
+    );
+
+    return updatePost;
+  }
 }
 
 module.exports = PostService;
