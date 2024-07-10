@@ -6,12 +6,15 @@ import { useSelector } from "react-redux";
 import { Button, Spinner } from "flowbite-react";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
+
 export default function PostPage() {
   const { currentUser } = useSelector((state) => state.user);
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [post, setPost] = useState(null);
+  const [postId, setPostId] = useState(null);
+
   useEffect(() => {
     const fetchPost = async () => {
       setLoading(true);
@@ -38,6 +41,7 @@ export default function PostPage() {
           toast.success(data.message);
           setLoading(false);
           setError(null);
+          setPostId(data.data.posts[0]._id);
         }
       } catch (error) {
         toast.error(error.message);
@@ -46,13 +50,15 @@ export default function PostPage() {
       }
     };
     fetchPost();
-  }, [postSlug]);
+  }, [postSlug, currentUser._id]);
+
   if (loading)
     return (
       <div className="flex justify-center items-center min-h-screen">
         <Spinner size="xl" />
       </div>
     );
+
   return (
     <main className="p-3 flex flex-col lg:max-w-6xl md:max-w-3xl mx-auto min-h-screen">
       <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl ">
@@ -88,7 +94,7 @@ export default function PostPage() {
         <CallToAction />
       </div>
 
-      <CommentSection postId={post && post._id} />
+      {postId && <CommentSection postId={postId} />}
     </main>
   );
 }

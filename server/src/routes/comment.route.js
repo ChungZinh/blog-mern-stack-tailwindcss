@@ -5,4 +5,5 @@ const CommentController = require("../controllers/comment.controller");
 
 router.use(require("../auth/authUtils").verifyToken);
 router.post("/create", asyncHandler(CommentController.createComment));
+router.get("/get/:postId", asyncHandler(CommentController.getCommentsByPostId));
 module.exports = router;

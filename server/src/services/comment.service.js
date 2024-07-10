@@ -14,6 +14,14 @@ class CommentService {
 
     return newComment;
   }
+
+  static async getCommentsByPostId(postId) {
+    console.log("post: ", postId)
+    const comments = await Comment.find({ postId: postId })
+      .populate("userId")
+      .sort({ createdAt: -1 });
+    return comments;
+  }
 }
 
 module.exports = CommentService;

@@ -78,6 +78,15 @@ class UserService {
       lastMonthUsers,
     };
   }
+
+  static async getUser(req) {
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      throw new UnauthorizedResponse("User not found");
+    }
+    const { password, ...rest } = user._doc;
+    return rest;
+  }
 }
 
 module.exports = UserService;
