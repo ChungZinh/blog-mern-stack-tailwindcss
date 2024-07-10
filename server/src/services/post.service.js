@@ -51,6 +51,10 @@ class PostService {
 
     return { posts, totalPosts, lastMonthPosts };
   }
+
+  static async delete(req) {
+    await Post.findByIdAndDelete(req.params.id);
+  }
 }
 
 module.exports = PostService;

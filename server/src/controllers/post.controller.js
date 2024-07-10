@@ -14,6 +14,13 @@ class PostController {
       data: await PostService.getAll(req),
     }).send(res);
   }
+
+  static async delete(req, res, next) {
+    new SuccessResponse({
+      message: "Post deleted successfully",
+      data: await PostService.delete(req),
+    }).send(res);
+  }
 }
 
 module.exports = PostController;

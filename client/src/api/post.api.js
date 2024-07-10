@@ -1,6 +1,5 @@
 import { toast } from "react-toastify";
 import { serverUrl } from "../constants";
-import { useState } from "react";
 
 export const createPost = async (user, formData, navigate) => {
   try {
@@ -50,5 +49,23 @@ export const getPosts = async (user, posts, setPosts) => {
   } catch (err) {
     console.error(err);
     toast.error(err.message || "Failed to get posts");
+  }
+};
+
+export const deletePost = async (user, postId) => {
+  try {
+    const res = await fetch(`${serverUrl}/api/post/delete/${postId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+        authorization: localStorage.getItem("token"),
+        "x-client-id": user._id,
+      },
+    });
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
   }
 };
