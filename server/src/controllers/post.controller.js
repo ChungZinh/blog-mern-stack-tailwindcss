@@ -7,6 +7,13 @@ class PostController {
       data: await PostService.create(req),
     }).send(res);
   }
+
+  static async getAll(req, res, next) {
+    new SuccessResponse({
+      message: "Get all posts successfully",
+      data: await PostService.getAll(req),
+    }).send(res);
+  }
 }
 
 module.exports = PostController;
