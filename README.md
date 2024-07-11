@@ -1,4 +1,3 @@
-```markdown
 
 # Blog MERN Stack with TailwindCSS
 
