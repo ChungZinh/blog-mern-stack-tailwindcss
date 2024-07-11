@@ -10,7 +10,7 @@ import {
   HiUserGroup,
 } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { logout } from "../api/auth.api";
 
 export default function DashSideBar() {
@@ -31,60 +31,35 @@ export default function DashSideBar() {
   return (
     <Sidebar className="w-full md:w-72">
       <Sidebar.Items>
-        <Sidebar.ItemGroup>
+        <Sidebar.ItemGroup className="gap-4">
           {currentUser.isAdmin && (
-            <Sidebar.Item
-              active={tab === "dashboard"}
-              icon={HiChartPie}
-              // label={"User"}
-              labelColor="dark"
-              href="/dashboard?tab=dashboard"
-            >
-              Dashboard
+            <Sidebar.Item icon={HiChartPie} labelColor="dark">
+              <Link to={"/dashboard?tab=dashboard"}>Dashboard</Link>
             </Sidebar.Item>
           )}
           <Sidebar.Item
-            active={tab === "profile"}
             icon={HiUser}
             label={currentUser.isAdmin ? "Admin" : "User"}
             labelColor="dark"
-            href="/dashboard?tab=profile"
           >
-            Profile
+            <Link to={"/dashboard?tab=profile"}>Profile</Link>
           </Sidebar.Item>
+
           {currentUser.isAdmin && (
-            <Sidebar.Item
-              active={tab === "posts"}
-              icon={HiDocumentText}
-              // label={"User"}
-              labelColor="dark"
-              href="/dashboard?tab=posts"
-            >
-              Posts
+            <Sidebar.Item icon={HiDocumentText} labelColor="dark">
+              <Link to={"/dashboard?tab=posts"}>Posts</Link>
             </Sidebar.Item>
           )}
 
           {currentUser.isAdmin && (
-            <Sidebar.Item
-              active={tab === "users"}
-              icon={HiUserGroup}
-              // label={"User"}
-              labelColor="dark"
-              href="/dashboard?tab=users"
-            >
-              Users
+            <Sidebar.Item icon={HiUserGroup} labelColor="dark">
+              <Link to={"/dashboard?tab=users"}>Users</Link>
             </Sidebar.Item>
           )}
 
           {currentUser.isAdmin && (
-            <Sidebar.Item
-              active={tab === "comments"}
-              icon={HiAnnotation}
-              // label={"User"}
-              labelColor="dark"
-              href="/dashboard?tab=comments"
-            >
-              Comments
+            <Sidebar.Item icon={HiAnnotation} labelColor="dark">
+              <Link to={"/dashboard?tab=comments"}>Comments</Link>
             </Sidebar.Item>
           )}
 
