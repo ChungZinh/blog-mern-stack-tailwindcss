@@ -4,20 +4,41 @@ import {
   Dropdown,
   Navbar,
   TextInput,
-  theme,
 } from "flowbite-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { logout } from "../api/auth.api";
+import { useEffect, useState } from "react";
 export default function Header() {
   const path = useLocation().pathname;
+  const navigate = useNavigate();
+  const location = useLocation();
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.theme);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermURL = urlParams.get("searchTerm");
+    if (searchTermURL) {
+      setSearchTerm(searchTermURL);
+    }
+  }, [location.search]);
+
   const handleLogout = async () => {
     await logout(dispatch, currentUser);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const url = new URLSearchParams(location.search);
+    url.set("searchTerm", searchTerm);
+    const search = url.toString();
+    navigate(`/search?${search}`);
   };
   return (
     <div>
@@ -31,12 +52,14 @@ export default function Header() {
           </span>
           Blog
         </Link>
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <TextInput
             className="hidden lg:inline"
             type="text"
             placeholder="Search..."
             rightIcon={AiOutlineSearch}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </form>
         <Button className="w-12 h-10 lg:hidden" color={"gray"}>
@@ -48,7 +71,7 @@ export default function Header() {
             color="gray"
             onClick={() => dispatch(toggleTheme())}
           >
-            {theme === "light" ? <FaSun /> : <FaMoon />}
+            {theme === "light" ? <FaMoon /> : <FaSun />}
           </Button>
           {currentUser ? (
             <Dropdown
