@@ -60,6 +60,17 @@ class CommentService {
 
     return editedComment;
   }
+
+  static async delete(req) {
+    const comment = await Comment.findById(req.params.id);
+    if (!comment) throw new NotFoundResponse("Comment not found");
+
+    if (comment.userId !== req.user.id && !req.user.isAdmin) {
+      throw new NotFoundResponse("You are not allowed to edit this comment");
+    }
+
+    await Comment.findByIdAndDelete(req.params.id);
+  }
 }
 
 module.exports = CommentService;

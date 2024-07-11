@@ -28,6 +28,13 @@ class CommentController {
       data: await CommentService.edit(req),
     }).send(res);
   }
+
+  static async delete(req, res, next) {
+    new SuccessResponse({
+      message: "Comment liked successfully",
+      data: await CommentService.delete(req),
+    }).send(res);
+  }
 }
 
 module.exports = CommentController;

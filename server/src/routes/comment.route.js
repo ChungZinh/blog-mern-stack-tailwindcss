@@ -8,5 +8,6 @@ router.post("/create", asyncHandler(CommentController.createComment));
 router.get("/get/:postId", asyncHandler(CommentController.getCommentsByPostId));
 router.put("/like/:id", asyncHandler(CommentController.like));
 router.put("/edit/:id", asyncHandler(CommentController.edit));
+router.delete("/delete/:id", asyncHandler(CommentController.delete));
 
 module.exports = router;

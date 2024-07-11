@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Button, Spinner } from "flowbite-react";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
+import PostCard from "../components/PostCard";
 
 export default function PostPage() {
   const { currentUser } = useSelector((state) => state.user);
@@ -14,6 +15,7 @@ export default function PostPage() {
   const [error, setError] = useState(null);
   const [post, setPost] = useState(null);
   const [postId, setPostId] = useState(null);
+  const [recentPosts, setRecentPosts] = useState(null);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -50,6 +52,29 @@ export default function PostPage() {
       }
     };
     fetchPost();
+  }, [postSlug, currentUser._id]);
+
+  useEffect(() => {
+    try {
+      const fetchRecentPost = async () => {
+        const res = await fetch(`${serverUrl}/api/post/getposts?limit=3`, {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            authorization: localStorage.getItem("token"),
+            "x-client-id": currentUser._id,
+          },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setRecentPosts(data.data.posts);
+        }
+      };
+      fetchRecentPost();
+    } catch (error) {
+      toast.error(error.message);
+      setError(error.message);
+    }
   }, [postSlug, currentUser._id]);
 
   if (loading)
@@ -95,6 +120,14 @@ export default function PostPage() {
       </div>
 
       {postId && <CommentSection postId={postId} />}
+
+      <div className="flex flex-col justify-center items-center mb-5">
+        <h1>Recent articles</h1>
+        <div className="flex flex-wrap gap-5 mt-5 justify-center">
+          {recentPosts &&
+            recentPosts.map((p) => <PostCard key={p._id} post={p} />)}
+        </div>
+      </div>
     </main>
   );
 }
