@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import {
   HiAnnotation,
   HiArrowSmRight,
+  HiChartPie,
   HiDocumentText,
   HiOutlineUserGroup,
   HiUser,
@@ -31,6 +32,17 @@ export default function DashSideBar() {
     <Sidebar className="w-full md:w-72">
       <Sidebar.Items>
         <Sidebar.ItemGroup>
+          {currentUser.isAdmin && (
+            <Sidebar.Item
+              active={tab === "dashboard"}
+              icon={HiChartPie}
+              // label={"User"}
+              labelColor="dark"
+              href="/dashboard?tab=dashboard"
+            >
+              Dashboard
+            </Sidebar.Item>
+          )}
           <Sidebar.Item
             active={tab === "profile"}
             icon={HiUser}
