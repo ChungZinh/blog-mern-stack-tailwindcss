@@ -16,11 +16,29 @@ class CommentService {
   }
 
   static async getCommentsByPostId(postId) {
-    console.log("post: ", postId)
+    console.log("post: ", postId);
     const comments = await Comment.find({ postId: postId })
       .populate("userId")
       .sort({ createdAt: -1 });
     return comments;
+  }
+
+  static async like(req) {
+    const comment = await Comment.findById(req.params.id);
+    if (!comment) throw new NotFoundResponse("Comment not found");
+
+    const userIndex = comment.likes.indexOf(req.user._id);
+    if (userIndex === -1) {
+      comment.numberOfLikes += 1;
+      comment.likes.push(req.user._id);
+    } else {
+      comment.numberOfLikes -= 1;
+      comment.likes.splice(userIndex, 1);
+    }
+
+    await comment.save();
+
+    return comment;
   }
 }
 

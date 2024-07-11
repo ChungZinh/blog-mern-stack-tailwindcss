@@ -21,8 +21,7 @@ class PostController {
       data: await PostService.delete(req),
     }).send(res);
   }
-
-  static async update(req, res, next){
+  static async update(req, res, next) {
     new SuccessResponse({
       message: "Post updated successfully",
       data: await PostService.update(req),

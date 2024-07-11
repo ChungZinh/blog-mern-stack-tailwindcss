@@ -14,6 +14,13 @@ class CommentController {
       data: await CommentService.getCommentsByPostId(req.params.postId),
     }).send(res);
   }
+
+  static async like(req, res, next) {
+    new SuccessResponse({
+      message: "Comment liked successfully",
+      data: await CommentService.like(req),
+    }).send(res)
+  }
 }
 
 module.exports = CommentController;
