@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-const mongoURI = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
 
 class Database {
   constructor() {
@@ -14,7 +13,7 @@ class Database {
     }
 
     mongoose
-      .connect(mongoURI)
+      .connect(process.env.MONGOURI)
       .then(() => {
         console.log(
           `Database connection successful with ${process.env.DB_NAME}`
