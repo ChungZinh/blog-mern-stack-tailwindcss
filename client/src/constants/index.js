@@ -1,1 +1,1 @@
-export const serverUrl = "https://blog-api-navy-nine.vercel.app/";
+export const serverUrl = "https://blog-api-navy-nine.vercel.app";
