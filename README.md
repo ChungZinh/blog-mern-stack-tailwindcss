@@ -28,24 +28,24 @@ Make sure you have the following installed on your machine:
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/ChungZinh/blog-mern-stack-tailwindcss.git
-cd blog-mern-stack-tailwindcss
+    git clone https://github.com/ChungZinh/blog-mern-stack-tailwindcss.git
+    cd blog-mern-stack-tailwindcss
 
-    Install dependencies for the server
+Install dependencies for the server
 
-bash
+```bash
 
-cd server
-yarn install
+    cd server
+    yarn install
 
-    Install dependencies for the client
+Install dependencies for the client
 
-bash
+```bash
 
-cd client
-yarn install
+    cd client
+    yarn install
 
-    Set up environment variables
+Set up environment variables
 
 Create a .env file in the server directory and add the following variables:
 
@@ -56,7 +56,7 @@ PORT=your_port
 
     Run the server
 
-bash
+```bash
 
 cd server
 yarn start
