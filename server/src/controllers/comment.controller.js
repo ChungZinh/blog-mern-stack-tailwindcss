@@ -19,7 +19,14 @@ class CommentController {
     new SuccessResponse({
       message: "Comment liked successfully",
       data: await CommentService.like(req),
-    }).send(res)
+    }).send(res);
+  }
+
+  static async edit(req, res, next) {
+    new SuccessResponse({
+      message: "Comment liked successfully",
+      data: await CommentService.edit(req),
+    }).send(res);
   }
 }
 

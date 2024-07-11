@@ -24,7 +24,7 @@ class CommentService {
   }
 
   static async like(req) {
-    console.log("req: ", req.params.id)
+    console.log("req: ", req.params.id);
     const comment = await Comment.findById(req.params.id);
     if (!comment) throw new NotFoundResponse("Comment not found");
 
@@ -40,6 +40,25 @@ class CommentService {
     await comment.save();
 
     return comment;
+  }
+
+  static async edit(req) {
+    const comment = await Comment.findById(req.params.id);
+    if (!comment) throw new NotFoundResponse("Comment not found");
+
+    if (comment.userId !== req.user.id && !req.user.isAdmin) {
+      throw new NotFoundResponse("You are not allowed to edit this comment");
+    }
+
+    const editedComment = await Comment.findByIdAndUpdate(
+      req.params.id,
+      {
+        content: req.body.content,
+      },
+      { new: true }
+    );
+
+    return editedComment;
   }
 }
 
