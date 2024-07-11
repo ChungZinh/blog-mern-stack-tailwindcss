@@ -27,104 +27,106 @@ Make sure you have the following installed on your machine:
 
 1. **Clone the repository**
 
-```bash
+    ```bash
     git clone https://github.com/ChungZinh/blog-mern-stack-tailwindcss.git
     cd blog-mern-stack-tailwindcss
 
-Install dependencies for the server
+2. **Install dependencies for the server**
 
-```bash
+    ```bash
 
     cd server
     yarn install
 
-Install dependencies for the client
+3. **Install dependencies for the client**
 
-```bash
+    ```bash
 
     cd client
     yarn install
 
-Set up environment variables
+4. **Set up environment variables**
 
 Create a .env file in the server directory and add the following variables:
 
-makefile
+    ```makefile
 
-MONGOURI=your_mongodb_uri
-PORT=your_port
+    MONGOURI=your_mongodb_uri
+    PORT=your_port
 
-    Run the server
+5. **Run the server**
 
-```bash
+    ```bash
 
-cd server
-yarn start
+    cd server
+    node --watch index.js
 
-    Run the client
+6. **Run the client**
 
-bash
+    ```bash
 
-cd client
-yarn start
+    cd client
+    yarn start
 
-Usage
+##Usage
 
 Open your browser and navigate to http://localhost:3000 to see the application in action.
-Features
+
+##Features
 
    User authentication (sign up, login, logout)
    Create, read, update, delete (CRUD) blog posts
    Responsive design using TailwindCSS
    Admin dashboard for managing posts, comments, and users
 
-Folder Structure
+##Folder Structure
 
 Here is an overview of the folder structure of this project:
 
-csharp
+    ```csharp
 
-blog-mern-stack-tailwindcss
-│
-├── client
-│   ├── public
-│   └── src
-│       ├── assets
-│       ├── api
-│       ├── components
-│       ├── pages
-│       ├── constants
-│       ├── redux
-│       ├── utils
-│       ├── App.js
-│       └── index.js
-│
-├── server
-│   ├── src
-│   │   ├── auth
-│   │   ├── controllers
-│   │   ├── core
-│   │   ├── db
-│   │   │   └── init.mongod...
-│   │   ├── helpers
-│   │   ├── models
-│   │   ├── routes
-│   │   ├── services
-│   │   ├── utils
-│   │   └── app.js
-│   ├── .env
-│   ├── index.js
-│   ├── package.json
-│   └── yarn.lock
-│
-├── .gitignore
-├── README.md
-└── vercel.json
+    blog-mern-stack-tailwindcss
+    │
+    ├── client
+    │   ├── public
+    │   └── src
+    │       ├── assets
+    │       ├── api
+    │       ├── components
+    │       ├── pages
+    │       ├── constants
+    │       ├── redux
+    │       ├── utils
+    │       ├── App.js
+    │       └── index.js
+    │
+    ├── server
+    │   ├── src
+    │   │   ├── auth
+    │   │   ├── controllers
+    │   │   ├── core
+    │   │   ├── db
+    │   │   │   └── init.mongod...
+    │   │   ├── helpers
+    │   │   ├── models
+    │   │   ├── routes
+    │   │   ├── services
+    │   │   ├── utils
+    │   │   └── app.js
+    │   ├── .env
+    │   ├── index.js
+    │   ├── package.json
+    │   └── yarn.lock
+    │
+    ├── .gitignore
+    ├── README.md
+    └── vercel.json
 
-Contributing
+##Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
-License
+
+##License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 ```
