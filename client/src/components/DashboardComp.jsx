@@ -58,7 +58,7 @@ export default function DashboardComp() {
           const data = await res.json();
           if (res.ok) {
             setPosts(data.data.posts);
-            setTotalPosts(data.data.total);
+            setTotalPosts(data.data.totalPosts);
             setLastMonthPosts(data.data.lastMonthPosts);
             toast.success("Get posts successfully");
             console.log("posts:", posts);
@@ -84,8 +84,8 @@ export default function DashboardComp() {
           const data = await res.json();
           if (res.ok) {
             setComments(data.data.comments);
-            setTotalComments(data.data.total);
-            setLastMonthComments(data.data.lastMonthComments);
+            setTotalComments(data.data.totalComments);
+            setLastMonthComments(data.data.commentsLastMonth);
           }
         } catch (error) {
           toast.error("Get posts error");
