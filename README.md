@@ -68,22 +68,20 @@ Create a .env file in the server directory and add the following variables:
     cd client
     yarn start
 
-##Usage
+## Usage
 
 Open your browser and navigate to http://localhost:3000 to see the application in action.
 
-##Features
+## Features
 
    User authentication (sign up, login, logout)
    Create, read, update, delete (CRUD) blog posts
    Responsive design using TailwindCSS
    Admin dashboard for managing posts, comments, and users
 
-##Folder Structure
+## Folder Structure
 
 Here is an overview of the folder structure of this project:
-
-    ```csharp
 
     blog-mern-stack-tailwindcss
     │
@@ -118,15 +116,13 @@ Here is an overview of the folder structure of this project:
     │   ├── package.json
     │   └── yarn.lock
     │
-    ├── .gitignore
-    ├── README.md
-    └── vercel.json
+    └── README.md
 
-##Contributing
+## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
 
-##License
+## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 ```
