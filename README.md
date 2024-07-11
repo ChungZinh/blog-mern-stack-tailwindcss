@@ -46,10 +46,10 @@ Make sure you have the following installed on your machine:
 
 4. **Set up environment variables**
 
-Create a .env file in the server directory and add the following variables:
+    Create a .env file in the server directory and add the following variables:
 
     ```makefile
-
+    
     MONGOURI=your_mongodb_uri
     PORT=your_port
 
