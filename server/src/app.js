@@ -20,6 +20,9 @@ require("./db/init.mongodb");
 
 // routes
 app.use("", require("./routes"));
+app.get('/', (req, res)=> {
+  res.send("Hello")
+})
 
 // error handling
 app.use((req, res, next) => {
