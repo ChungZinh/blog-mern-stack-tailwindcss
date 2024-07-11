@@ -15,6 +15,13 @@ class CommentController {
     }).send(res);
   }
 
+  static async getAll(req, res, next){
+    new SuccessResponse({
+      message: "Comments fetched successfully",
+      data: await CommentService.getAllComments(req),
+    }).send(res);
+  }
+
   static async like(req, res, next) {
     new SuccessResponse({
       message: "Comment liked successfully",
