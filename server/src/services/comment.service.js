@@ -24,6 +24,7 @@ class CommentService {
   }
 
   static async like(req) {
+    console.log("req: ", req.params.id)
     const comment = await Comment.findById(req.params.id);
     if (!comment) throw new NotFoundResponse("Comment not found");
 

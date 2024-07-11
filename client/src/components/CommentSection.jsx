@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { serverUrl } from "../constants";
@@ -10,9 +10,14 @@ export default function CommentSection({ postId }) {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!currentUser || !currentUser._id) {
+      toast.error("You must be signed in to comment");
+      return;
+    }
     try {
       const res = await fetch(`${serverUrl}/api/comment/create`, {
         method: "POST",
@@ -32,9 +37,10 @@ export default function CommentSection({ postId }) {
       if (res.ok) {
         setComment("");
         toast.success(data.message);
-        // Fetch comments again to update the list
         setComments([data.data, ...comments]);
         getComments();
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error("Comment error");
@@ -48,7 +54,7 @@ export default function CommentSection({ postId }) {
         headers: {
           "Content-type": "application/json",
           authorization: localStorage.getItem("token"),
-          "x-client-id": currentUser._id,
+          "x-client-id": currentUser?._id,
         },
       });
 
@@ -64,6 +70,43 @@ export default function CommentSection({ postId }) {
       getComments();
     }
   }, [postId]);
+
+  const handleLike = async (commentId) => {
+    try {
+      if (!currentUser || !currentUser._id) {
+        toast.error("You must be signed in to like a comment");
+        navigate("/sign-in");
+        return;
+      }
+      const res = await fetch(`${serverUrl}/api/comment/like/${commentId}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+          authorization: localStorage.getItem("token"),
+          "x-client-id": currentUser._id,
+        },
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setComments(
+          comments.map((c) =>
+            c._id === commentId
+              ? {
+                  ...c,
+                  likes: data.data.likes,
+                  numberOfLikes: data.data.numberOfLikes,
+                }
+              : c
+          )
+        );
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("Like error");
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
@@ -121,7 +164,7 @@ export default function CommentSection({ postId }) {
             </div>
           </div>
           {comments.map((c) => (
-            <Comment key={c._id} comment={c} />
+            <Comment key={c._id} comment={c} onLike={handleLike} />
           ))}
         </>
       )}
